@@ -1,0 +1,26 @@
+{
+  "name": "collab-clipboard",
+  "version": "0.0.0",
+  "description": "Collaborative clipboard operations in ProseMirror",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "prosemirror",
+    "collaborative"
+  ],
+  "author": "Dylan Nelson",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "jest": "^24.8.0",
+    "prosemirror-collab": "^1.1.2",
+    "prosemirror-model": "^1.7.1",
+    "prosemirror-test-builder": "^1.0.1",
+    "prosemirror-transform": "^1.1.3"
+  }
+}
