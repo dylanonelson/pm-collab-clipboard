@@ -11,7 +11,7 @@ import { registerSpec, withRegisters } from '../registers';
 const { builders: makeBuilders } = testBuilder;
 
 describe('register types', () => {
-  test('can store information about a slice', () => {
+  test('can store information about a block slice', () => {
     const schema = withRegisters(basicSchema);
     const builders = makeBuilders(schema);
     const doc = builders.doc(
@@ -20,6 +20,18 @@ describe('register types', () => {
     );
     const slice = doc.slice(doc.tag.a, doc.tag.b);
     const register = builders.register_block({}, ...slice.content.content);
+    expect(register.content.eq(slice.content)).toBe(true);
+  });
+
+  test('can store information about an inline slice', () => {
+    const schema = withRegisters(basicSchema);
+    const builders = makeBuilders(schema);
+    const doc = builders.doc(
+      builders.paragraph('he<a>ll<b>o'),
+      builders.paragraph('world'),
+    );
+    const slice = doc.slice(doc.tag.a, doc.tag.b);
+    const register = builders.register_inline({}, ...slice.content.content);
     expect(register.content.eq(slice.content)).toBe(true);
   });
 
