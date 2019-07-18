@@ -4,6 +4,7 @@
   "description": "Collaborative clipboard operations in ProseMirror",
   "main": "lib/index.js",
   "scripts": {
+    "build": "babel src -d lib --ignore src/**/*.test.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -20,6 +21,7 @@
     "jest": "^24.8.0",
     "prosemirror-collab": "^1.1.2",
     "prosemirror-model": "^1.7.1",
+    "prosemirror-schema-list": "^1.0.3",
     "prosemirror-test-builder": "^1.0.1",
     "prosemirror-transform": "^1.1.3"
   }

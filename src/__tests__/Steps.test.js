@@ -1,7 +1,11 @@
 import nodes from 'prosemirror-test-builder';
 import { Transform } from 'prosemirror-transform';
+import { EditorState } from 'prosemirror-state';
+import { collab, receiveTransaction } from 'prosemirror-collab';
 import { Slice } from 'prosemirror-model';
-import { MoveStep } from '../index';
+import { MoveStep } from '../Steps';
+
+const { schema } = nodes;
 
 describe('MoveStep', () => {
   test('Moves whole nodes forward', () => {
@@ -135,7 +139,7 @@ describe('MoveStep', () => {
     expect(redid.toJSON()).toEqual(done.toJSON());
   });
 
-  test('Moves slices with open ends backwards', () => {
+  test('Moves slices with open ends backward', () => {
     const doc = nodes.doc(
       nodes.p('1234567890'),
       nodes.p('abcdefghij'),
@@ -160,7 +164,7 @@ describe('MoveStep', () => {
     expect(moveTr.doc.eq(replaceTr.doc)).toBe(true);
   });
 
-  test('Inverts moving slices with open ends forward', () => {
+  test('Inverts moving slices with open ends backward', () => {
     const doc = nodes.doc(
       nodes.p('1234567890'),
       nodes.p('abcdefghij'),
@@ -180,5 +184,35 @@ describe('MoveStep', () => {
     const redo = inverted.invert(undid);
     const { doc: redid } = moveTr.step(redo);
     expect(redid.toJSON()).toEqual(done.toJSON());
+  });
+
+  describe('during rebase', () => {
+    test('maps over other user\'s changes', () => {
+      let es = EditorState.create({
+        doc: nodes.doc(
+          nodes.p('first para'),
+          nodes.p('secon para'),
+          nodes.p('third para'),
+        ),
+        plugins: [collab()],
+        schema,
+      });
+      const { tr } = es;
+      const winningTr = es.tr.insert(6, schema.text(' hello'));
+      const losingSteps = [
+        new MoveStep(0, 12, 24)
+      ];
+      const losingTr = es.tr.step(losingSteps[0]);
+      es = es.apply(losingTr);
+      const collabTr = receiveTransaction(
+        es,
+        winningTr.steps,
+        ['someone else'],
+      );
+      es = es.apply(collabTr);
+      expect(es.doc.textBetween(0, es.doc.nodeSize - 2, '|')).toBe(
+        'secon para|first hello para|third para'
+      );
+    });
   });
 });
