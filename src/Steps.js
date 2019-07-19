@@ -89,11 +89,22 @@ class MoveStep extends Step {
       mappable.mapResult(this.dest, 1).pos,
     );
   }
+
+  toJSON() {
+    return {
+      stepType: MoveStep.jsonID,
+      from: this.from,
+      to: this.to,
+      dest: this.dest,
+    };
+  }
 };
 
 MoveStep.jsonID = 'moveStep';
 
-MoveStep.fromJSON = function (json) {};
+MoveStep.fromJSON = function (json) {
+  new MoveStep(json.from, json.to, json.dest);
+}
 
 Step.jsonID(MoveStep.jsonID, MoveStep);
 
@@ -168,11 +179,30 @@ class InvertedMoveStep extends Step {
       },
     );
   }
+
+  toJSON() {
+    return {
+      stepType: InvertedMoveStep.jsonID,
+      dest: this.dest,
+      slice: slice.toJSON(),
+      deleteFrom: this.deleteFrom,
+      deleteTo: this.deleteTo,
+    };
+  }
 }
 
 InvertedMoveStep.jsonID = 'invertedMoveStep';
 
-InvertedMoveStep.fromJSON = function (json) {};
+InvertedMoveStep.fromJSON = function (schema, json) {
+  return new InvertedMoveStep(
+    json.dest,
+    Slice.from(schema, json),
+    {
+      from: json.deleteFrom,
+      to: json.deleteTo,
+    },
+  );
+}
 
 Step.jsonID(InvertedMoveStep.jsonID, InvertedMoveStep);
 
