@@ -21,6 +21,7 @@ export const makeRegisterSpec = expr => ({
 });
 
 export const registerSlotSpec = {
+  attrs: {},
   content: 'register*',
   toDOM(node) {
     return [
