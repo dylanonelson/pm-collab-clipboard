@@ -102,7 +102,7 @@ describe('withRegisters', () => {
 
     expect(doc.lastChild.type).toBe(result.nodes.register_slot);
     expect(() => doc.check()).not.toThrow();
-    expect(doc.lastChild.firstChild.content.eq(slice.content)).toBe(true);
+    expect(doc.lastChild.lastChild.content.eq(slice.content)).toBe(true);
   });
 
   test('schema-compliant docs always have registers at the end', () => {

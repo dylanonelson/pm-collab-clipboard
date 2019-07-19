@@ -46,8 +46,8 @@ export function withRegisters(schema) {
   return new Schema({
     nodes: {
       ...nodes,
-      register_block: makeRegisterSpec(`(${blockNodes.join(' | ')})+`),
-      register_inline: makeRegisterSpec(`(${inlineNodes.join(' | ')})+`),
+      register_block: makeRegisterSpec(`(${blockNodes.join(' | ')})*`),
+      register_inline: makeRegisterSpec(`(${inlineNodes.join(' | ')})*`),
       register_slot: registerSlotSpec,
     },
     marks,
