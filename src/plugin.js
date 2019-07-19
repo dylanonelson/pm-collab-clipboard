@@ -3,6 +3,15 @@ import { Slice } from 'prosemirror-model';
 import { __serializeForClipboard as serializeForClipboard } from 'prosemirror-view';
 import { MoveStep } from './Steps';
 
+function searchFragment(fragment, checker) {
+  for (let i = 0; i < fragment.childCount; i += 1) {
+    if (checker(fragment.child(i))) {
+      return fragment.child(i);
+    }
+  }
+  return null;
+}
+
 function findMatchingRegister(doc, slice) {
   const { lastChild: registerSlot } = doc;
   const slotPos = doc.nodeSize - 2 - registerSlot.nodeSize;
@@ -25,7 +34,6 @@ export function handlePaste(view, event, slice) {
   if (register === null) {
     return null;
   }
-  console.log('paste');
   const [node, pos] = register;
   const { openStart, openEnd } = node.attrs;
   const { tr } = view.state;
@@ -42,7 +50,6 @@ export function handlePaste(view, event, slice) {
 }
 
 export function handleCut(view, event) {
-  console.log('cut');
   const { from, to } = view.state.selection;
   const slice = view.state.doc.slice(from, to);
   const { doc } = view.state;
@@ -59,7 +66,11 @@ export function handleCut(view, event) {
 
   const { tr } = view.state;
 
-  tr.insert(registerSlotPos + 1, doc.type.schema.nodes.register_inline.create(
+  const registerType = searchFragment(slice.content, node => node.isInline)
+    ? doc.type.schema.nodes.register_inline
+    : doc.type.schema.nodes.register_block;
+
+  tr.insert(registerSlotPos + 1, registerType.create(
     {
       openStart: slice.openStart,
       openEnd: slice.openEnd,

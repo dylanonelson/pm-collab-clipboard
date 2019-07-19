@@ -28,7 +28,7 @@ export const registerSlotSpec = {
       {
         class: 'register-slot',
         contenteditable: 'false',
-        style: 'height: 0; overflow: hidden;',
+        style: 'background-color: #ccc',
       },
       0
     ];
