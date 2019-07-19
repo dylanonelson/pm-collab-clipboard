@@ -5,6 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib --ignore src/**/*.test.js",
+    "build:watch": "npm run build -- --watch",
+    "demo": "npm run build:watch & webpack-dev-server",
     "test": "jest",
     "test:watch": "jest --watch"
   },
