@@ -25,6 +25,7 @@ export function handlePaste(view, event, slice) {
   if (register === null) {
     return null;
   }
+  console.log('paste');
   const [node, pos] = register;
   const { openStart, openEnd } = node.attrs;
   const { tr } = view.state;
@@ -41,6 +42,7 @@ export function handlePaste(view, event, slice) {
 }
 
 export function handleCut(view, event) {
+  console.log('cut');
   const { from, to } = view.state.selection;
   const slice = view.state.doc.slice(from, to);
   const { doc } = view.state;

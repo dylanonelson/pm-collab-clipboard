@@ -11,10 +11,28 @@ export const makeRegisterSpec = expr => ({
   },
   content: expr,
   group: 'register',
+  toDOM(node) {
+    return [
+      'div',
+      node.attrs,
+      0,
+    ];
+  }
 });
 
 export const registerSlotSpec = {
   content: 'register*',
+  toDOM(node) {
+    return [
+      'div',
+      {
+        class: 'register-slot',
+        contenteditable: 'false',
+        style: 'height: 0; overflow: hidden;',
+      },
+      0
+    ];
+  }
 };
 
 export function withRegisters(schema) {
