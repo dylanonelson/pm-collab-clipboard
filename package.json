@@ -4,7 +4,7 @@
   "description": "Collaborative clipboard operations in ProseMirror",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src -d lib --ignore src/**/*.test.js",
+    "build": "babel src -d lib --ignore **/*.test.js",
     "build:watch": "npm run build -- --watch",
     "demo": "npm run build:watch & webpack-dev-server",
     "prepare": "npm run build",
